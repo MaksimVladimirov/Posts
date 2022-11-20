@@ -15,10 +15,9 @@ function App() {
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
-  useEffect(()=> {
-console.log('Use effect')
-
-  },[])
+  useEffect(() => {
+   fetchPosts() 
+  }, []);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
