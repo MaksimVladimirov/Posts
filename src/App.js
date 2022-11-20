@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./styles/App.css";
-import axios from "axios";
 import PostList from "./components/PostList";
 import PostForm from "./components/UI/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import { usePosts } from "./hooks/usePosts";
+import PostService from "./API/PostService";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -14,6 +14,7 @@ function App() {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  const [isPostsLoading, setIsPostsLoading] = useState(false)
 
   useEffect(() => {
    fetchPosts() 
@@ -25,10 +26,9 @@ function App() {
   };
 
   async function fetchPosts() {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts"
-    );
-    setPosts(response.data);
+    setIsPostsLoading(true)
+    const posts = await PostService.getAll()
+    setPosts(posts);
   }
   /* Получаем пост из дочернего компонента */
 
