@@ -1,23 +1,16 @@
-import React from 'react'
-import React, { useEffect, useState } from "react";
-import "./styles/App.css";
-import PostList from "./components/PostList";
-import PostForm from "./components/UI/PostForm";
-import PostFilter from "./components/PostFilter";
-import MyModal from "./components/MyModal/MyModal";
-import MyButton from "./components/UI/button/MyButton";
-import { usePosts } from "./hooks/usePosts";
-import PostService from "./API/PostService";
-import Loader from "./components/UI/Loader/Loader";
-import { useFetching } from "./hooks/useFetching";
-import { getPageCount, getPagesArray } from "./utils/pages";
-import Pagination from "./components/UI/pagination/Pagination";
-
-
-
-  
-   
-
+import React, {useState, useEffect} from "react";
+import "../styles/App.css";
+import PostList from "../components/PostList";
+import PostForm from "../components/UI/PostForm";
+import PostFilter from "../components/PostFilter";
+import MyModal from "../components/MyModal/MyModal";
+import MyButton from "../components/UI/button/MyButton";
+import { usePosts } from "../hooks/usePosts";
+import PostService from "../API/PostService";
+import Loader from "../components/UI/Loader/Loader";
+import { useFetching } from "../hooks/useFetching";
+import { getPageCount, getPagesArray } from "../utils/pages";
+import Pagination from "../components/UI/pagination/Pagination";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -29,14 +22,14 @@ function Posts() {
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
- 
-
-  const [fetchPosts, isPostsLoading, postError] = useFetching(async (limit, page) => {
-    const response = await PostService.getAll(limit, page);
-    setPosts(response.data);
-    const totalCount = response.headers["x-total-count"];
-    setTotalPages(getPageCount(totalCount, limit));
-  });
+  const [fetchPosts, isPostsLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page);
+      setPosts(response.data);
+      const totalCount = response.headers["x-total-count"];
+      setTotalPages(getPageCount(totalCount, limit));
+    }
+  );
 
   useEffect(() => {
     fetchPosts(limit, page);
@@ -54,10 +47,9 @@ function Posts() {
   };
 
   const changePage = (page) => {
-    setPage(page)
-    fetchPosts(limit, page)
- 
-  }
+    setPage(page);
+    fetchPosts(limit, page);
+  };
 
   return (
     <div className="App">
@@ -87,16 +79,9 @@ function Posts() {
         />
       )}
 
-      <Pagination page={page} changePage={changePage} totalPages={totalPages}/>
-      
+      <Pagination page={page} changePage={changePage} totalPages={totalPages} />
     </div>
   );
 }
 
-
-
-
-
-
-   
-export default Posts
+export default Posts;
